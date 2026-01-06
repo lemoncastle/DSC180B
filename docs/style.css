@@ -1,0 +1,118 @@
+:root {
+  --bg: #fdfdfd;
+  --text: #454545;
+  --muted: #666;
+  /* https://colorcodes.io/purple/lavender-purple-color-codes/ */
+  --accent: #9873AC;
+  --accent2: #4B365F;
+  --border: #e5e5e5;
+  font-family: Open Sans, sans-serif;
+}
+
+a { color: #07a; } /* link color */
+::selection { /* Highlight color using --accent + opacity*/
+  background: rgba(152, 115, 172, 0.25);
+}
+
+/* removes all styling? idk chatgpt*/
+* { box-sizing: border-box; margin: 0; padding: 0; }
+body { background: var(--bg); color: var(--text); line-height: 1.5; font-size: 17px; }
+
+.container { max-width: 800px; margin: 0 auto; padding: 1rem; }
+.container.narrow { max-width: 640px; }
+
+/* Header styles */
+/* to add: 
+    I want the animate/ add transitions for text-decoration underline so it's smoother
+    the current is a bit harsh especially since the whole website is very soft and nice
+*/
+header.site-header { border-bottom: 1px solid var(--border); background: #fff; }
+header .container { display: flex; justify-content: space-between; align-items: center; }
+.prod-name { color: var(--text); font-size: 1.3rem; font-weight: 400; text-decoration: none; }
+.prod-name:hover {text-decoration: underline;}
+nav a { color: var(--text);margin-left: 1rem; color: var(--muted); text-decoration: none; }
+nav a:hover{ color: var(--accent); text-decoration: underline;}
+nav a.active:hover { text-decoration: underline; }
+nav a.active { color: var(--accent); text-decoration: none; }
+
+/* Title and Buttons*/
+.prod { text-align: left; margin-bottom: 2rem; }
+.prod .prod1 { color: var(--text); font-size: 1.3rem; font-weight: 400; }
+.prod .title { color: var(--accent2); margin-top: 0.5rem; font-size: 2rem; font-weight: 450; }
+.buttons { margin-top: 1rem; }
+.btn1, .btn2, .btn3 {
+  display: inline-block;
+  margin-right: 0.8rem;
+  padding: 0.7rem 1.2rem;
+  border-radius: 5px;
+  text-decoration: none;
+  font-weight: 450;
+  background-color: var(--accent);
+  color: #fff;
+  border-radius: 75px;
+  transition: background-color 0.3s ease;
+  cursor: pointer; 
+}
+
+.btn1:hover { background-color: var(--accent2); }
+.btn2:hover { background-color: var(--accent2); }
+.btn3:hover { background-color: var(--accent2); }
+
+/* Content Section */
+.content { margin-top: 2rem; }
+.content-title { color: var(--accent2); font-size: 1.8rem; font-weight: 450; margin-bottom: 1rem; margin-top: 1rem; }
+details { margin: .5rem; }
+details summary { cursor: pointer; color: var(--muted);}
+details div {
+  color: var(--muted);
+  margin-top: 0.5rem;
+  padding: 1rem;
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  background: #fff;
+}
+.image-clickable { text-align: center; }
+.image-clickable img { width: 35%; height: auto; }
+
+.container.narrow ul {
+  padding-left: 1.5rem;
+}
+.container.narrow .title { color: var(--accent2); margin-top: 0.5rem; font-size: 2rem; font-weight: 450; }
+p { margin-bottom: 1rem; }
+
+
+/* Footer style*/
+.site-footer { border-top: 1px solid var(--border); text-align: center; padding:.001rem; color: var(--muted); background: #fff; }
+
+
+
+/* .posts { margin-top: 2rem; }
+.post-item { margin-bottom: 2.5rem; }
+.post-item h2 { margin-bottom: 0.3rem; }
+.post-item .meta { font-size: 0.9rem; color: var(--muted); margin-bottom: 0.6rem; } */
+
+/* .post { background: #fff; padding: 2rem; border-radius: 8px; border: 1px solid var(--border); }
+.post h1 { margin-bottom: 0.5rem; }
+.post .meta { color: var(--muted); font-size: 0.9rem; margin-bottom: 1.5rem; } *
+
+
+/*testing*/
+#topButton {
+  display: none;
+  position: fixed;
+  bottom: 20px;
+  right: 30px;
+  z-index: 99; /* Make sure it does not overlap */
+  border: none;
+  outline: none;
+  color: var(--muted);
+  background-color: var(--bg);
+  cursor: pointer;
+  padding: 15px;
+  border-radius: 500px;
+  font-size: 10px;
+}
+
+#topButton:hover {
+  background-color: var(--border); /* Add a dark-grey background on hover */
+}
