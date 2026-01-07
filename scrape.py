@@ -4,6 +4,10 @@ from webdriver_manager.chrome import ChromeDriverManager
 from webdriver_manager.core.os_manager import ChromeType
 from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.common.by import By
+from selenium.webdriver.chrome.options import Options
+
+options = Options()
+options.headless = True
 
 from bs4 import BeautifulSoup
 import requests
@@ -20,9 +24,9 @@ url = start_url
 date = url.split("bin=")[1].split("_")[0][1:9]
 s = datetime.now()
 
-driver = webdriver.Chrome(service=ChromiumService(ChromeDriverManager(chrome_type=ChromeType.CHROMIUM).install()))
+driver = webdriver.Chrome(service=ChromiumService(ChromeDriverManager(chrome_type=ChromeType.CHROMIUM).install()), options=options)
 
-while '20250103' not in url:  # download files until 2025-01-03 (testing)
+while '2026' not in url:  # download files until 2026 (real run)
     driver.get(url)
 
     time.sleep(2)  # wait for Js to load content
@@ -56,7 +60,7 @@ while '20250103' not in url:  # download files until 2025-01-03 (testing)
     driver.execute_script("arguments[0].click();", next_button)
 
     # wait for URL to change
-    wait.until(lambda d: d.current_url != url)
+    WebDriverWait(driver, 10).until(lambda d: d.current_url != url)
     new_date = driver.current_url.split("bin=")[1].split("_")[0][1:9]
     if new_date != date: 
         print(f"Downloaded data for: {date} in {(datetime.now()- s).total_seconds()} s")
