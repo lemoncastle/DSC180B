@@ -19,14 +19,16 @@ out_dir = Path("ifcb_downloads")
 out_dir.mkdir(exist_ok=True)
 
 base_url="https://ifcb.caloos.org"
-start_url = "https://ifcb.caloos.org/bin?dataset=scripps-pier-ifcb-183&bin=D20250101T185049_IFCB183"
+# start_url = "https://ifcb.caloos.org/bin?dataset=scripps-pier-ifcb-183&bin=D20250101T185049_IFCB183"
+start_url = "https://ifcb.caloos.org/timeline?dataset=scripps-pier-ifcb-183&bin=D20250516T225724_IFCB183"
+# ^ timed out after 20250517 due do waiting too long for JS to load content. 
 url = start_url
 date = url.split("bin=")[1].split("_")[0][1:9]
 s = datetime.now()
 
 driver = webdriver.Chrome(service=ChromiumService(ChromeDriverManager(chrome_type=ChromeType.CHROMIUM).install()), options=options)
 
-while '2026' not in url:  # download files until 2026 (real run)
+while date !='20260101':  # download files until 2026 (real run)
     driver.get(url)
 
     time.sleep(2)  # wait for Js to load content
@@ -67,4 +69,6 @@ while '2026' not in url:  # download files until 2026 (real run)
         date = new_date
     url = driver.current_url
 
+print(f"Finished downloading all data in {(datetime.now()- s).total_seconds()} s")
+print(f"Last URL: {url}")
 driver.quit()
