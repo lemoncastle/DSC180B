@@ -22,6 +22,7 @@ base_url="https://ifcb.caloos.org"
 # start_url = "https://ifcb.caloos.org/bin?dataset=scripps-pier-ifcb-183&bin=D20250101T185049_IFCB183"
 start_url = "https://ifcb.caloos.org/timeline?dataset=scripps-pier-ifcb-183&bin=D20250516T225724_IFCB183"
 # ^ timed out after 20250517 due do waiting too long for JS to load content. 
+# this time got to 06027 before timing out. 
 url = start_url
 date = url.split("bin=")[1].split("_")[0][1:9]
 s = datetime.now()
