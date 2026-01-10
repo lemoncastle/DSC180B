@@ -4,21 +4,21 @@ from webdriver_manager.chrome import ChromeDriverManager
 from webdriver_manager.core.os_manager import ChromeType
 from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.common.by import By
-from selenium.webdriver.chrome.options import Options
-
-options = Options()
-options.headless = True
 
 from bs4 import BeautifulSoup
-import requests
 from pathlib import Path
+import requests
 from datetime import datetime
 import time
 
+options = webdriver.ChromeOptions()
+options.add_argument('--headless=new')
+
 base_url="https://ifcb.caloos.org"
 start_url = "https://ifcb.caloos.org/bin?dataset=scripps-pier-ifcb-183&bin=D20250101T185049_IFCB183"
-end_url = "https://ifcb.caloos.org/timeline?dataset=scripps-pier-ifcb-183&bin=D20260101T002031_IFCB183"
+end_url = "https://ifcb.caloos.org/bin?dataset=scripps-pier-ifcb-183&bin=D20260101T002031_IFCB183"
 url = start_url
+
 date = url.split("bin=")[1].split("_")[0][1:9]
 month = url.split("bin=")[1].split("_")[0][5:7]
 new_month = month
@@ -31,17 +31,16 @@ out_dir.mkdir(parents=True, exist_ok=True)
 driver = webdriver.Chrome(service=ChromiumService(ChromeDriverManager(chrome_type=ChromeType.CHROMIUM).install()), options=options)
 driver.get(url)
 
-while url != end_url:  # download files until 2026 (real run)
-    
-    while new_month == month:
-        time.sleep(2)  # wait for Js to load content
-        # wait up to 15 seconds, poll every 1 seconds
-        wait = WebDriverWait(driver, 15, poll_frequency=1)
+# wait up to 15 seconds, poll every 1 seconds
+wait = WebDriverWait(driver, timeout=15, poll_frequency=1)
+def href_not_hash(driver): # wait until the href of download links are updated (not '#')
+            el = driver.find_element(By.ID, "download-hdr")
+            href = el.get_attribute("href")
+            return "hdr" in href
 
-        def href_not_hash(driver):
-            el1 = driver.find_element(By.ID, "download-hdr")
-            href1 = el1.get_attribute("href")
-            return "hdr" in href1
+while url != end_url:
+    while new_month == month:
+        time.sleep(3)  # wait for Js to load content and update hrefs
         wait.until(href_not_hash)
 
         soup = BeautifulSoup(driver.page_source, 'html.parser')
@@ -60,20 +59,22 @@ while url != end_url:  # download files until 2026 (real run)
                     for chunk in r.iter_content(8192):
                         f.write(chunk)
         
-        # physically click the "Next Bin" button
-        # there is some js shenanigans that prevents just getting the href
-        next_button = driver.find_element(By.ID, "next-bin")
-        driver.execute_script("arguments[0].click();", next_button)
-
+        # "physically" click the "next-bin" button
+        #  js shenanigans prevents getting just the next bin href
         # wait for URL to change
-        WebDriverWait(driver, 10).until(lambda d: d.current_url != url)
+        next_button = driver.find_element(By.ID, "next-bin")
+        driver.execute_script("arguments[0].click();", next_button)        
+        wait.until(lambda d: d.current_url != url)
+
+        # update date month, and url
         new_date = driver.current_url.split("bin=")[1].split("_")[0][1:9]
         new_month= driver.current_url.split("bin=")[1].split("_")[0][5:7]
         if new_date != date: 
             print(f"Downloaded day: {date} in {(datetime.now()- s).total_seconds()}s")
             date = new_date
         url = driver.current_url
-
+    
+    # end of month loop
     print(f"== Downloaded all data of month {month} in {(datetime.now()- s).total_seconds()}s")
     month=new_month
     out_dir = Path(f"./ifcb_downloads/2025{month}")
