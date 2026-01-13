@@ -10,12 +10,6 @@ burger = Path(base_path) # used for iterating months I'm kinda hungry
 out_dir = Path("./processed/")
 out_dir.mkdir(parents=True, exist_ok=True)
 
-def read_hdr(path: Path) -> dict:
-    return { k.strip(): v.strip()
-            for line in path.read_text().splitlines()
-            if ":" in line
-            for k, v in [line.split(":", 1)] }
-
 # iterate through each month directory
 for month_dir in sorted(burger.iterdir()):
     path = base_path + month_dir.name + "/"
@@ -42,14 +36,15 @@ for month_dir in sorted(burger.iterdir()):
                         print(f"Class scores file is empty for date {date}")
             else:
                 ## idk what do do with hdr file yet but I'll figure it out later
-                hdr = read_hdr(Path(match))
-                temperature = float(hdr["temperature"])
-                humidity = float(hdr["humidity"])
+                # hdr = read_hdr(Path(match))
+                # the tempperatures are probably the temperature of the machine not the water
+                # since temperatures are like 27 which is probably celsius so it's been ommited for now
+                # temperature = float(hdr["temperature"])
+                # humidity = float(hdr["humidity"])
+                continue
         
         # combine and save (shouldn't break if one of the dfs is empty)
         combined = pd.concat([class_scores, features], axis=1)
-        combined["temperature"] = temperature
-        combined["humidity"] = humidity
         out_file = out_dir / f"{date}.csv"
         combined.to_csv(out_file, index=False)
 
