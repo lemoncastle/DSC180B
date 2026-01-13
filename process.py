@@ -1,19 +1,26 @@
+from datetime import datetime
 from pathlib import Path
 import pandas as pd
 import glob
 import os
-from datetime import datetime
 s = datetime.now()
 
-path1 = "./ifcb_downloads/"
-burger = Path(path1) # used for iterating months I'm kinda hungry
+base_path = "./ifcb_downloads/"
+burger = Path(base_path) # used for iterating months I'm kinda hungry
 out_dir = Path("./processed/")
 out_dir.mkdir(parents=True, exist_ok=True)
 
+def read_hdr(path: Path) -> dict:
+    return { k.strip(): v.strip()
+            for line in path.read_text().splitlines()
+            if ":" in line
+            for k, v in [line.split(":", 1)] }
+
 # iterate through each month directory
 for month_dir in sorted(burger.iterdir()):
-    path = path1 + month_dir.name + "/"
-    print(f"Processing files in {path}")
+    path = base_path + month_dir.name + "/"
+    print(f"Processing files in {path}... {(datetime.now()- s).total_seconds()}s")
+    
     # for each hdr file in month folder get date and find matching files (with date)
     for files in glob.glob(path + '*.hdr'):
         date = os.path.basename(files).split('_')[0].lstrip('D')
@@ -35,12 +42,14 @@ for month_dir in sorted(burger.iterdir()):
                         print(f"Class scores file is empty for date {date}")
             else:
                 ## idk what do do with hdr file yet but I'll figure it out later
-                # hdr = Path(matches[0])
-                # print(hdr.read_text())
-                continue
+                hdr = read_hdr(Path(match))
+                temperature = float(hdr["temperature"])
+                humidity = float(hdr["humidity"])
         
         # combine and save (shouldn't break if one of the dfs is empty)
         combined = pd.concat([class_scores, features], axis=1)
+        combined["temperature"] = temperature
+        combined["humidity"] = humidity
         out_file = out_dir / f"{date}.csv"
         combined.to_csv(out_file, index=False)
 
