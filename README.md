@@ -15,3 +15,29 @@ requests==2.32.5
 ```
 During scraping of data the program timed out 4 times. I resumed from the last downloaded day.
 - To improve code, there should be exception handling and retries implemented. 
+
+
+### other data that was collected
+All were collected from
+- https://data.caloos.org/#metadata/120738/station/data
+time span from
+- 01/01/2024 00:00 - 01/01/2026 00:00
+
+turbidity & FDOM: Fluorescent Dissolved Organic Matter were done at the earliest online to january 1, 2026
+- 12/03/2024 17:25 - 01/01/2026 01:00
+
+From this website we get binned by day for consistency
+```
+Temperature
+Salinity 
+Chlorophyll
+Conductivity
+Sea Water Density 
+Sea Water Pressure 
+pH (Newport Pier and Scripps Pier)
+Oxygen (Newport Pier and Scripps Pier)
+```
+
+### other other data that was collected lmao
+https://data.caloos.org/#layer-data/59cb173d-9fab-44d0-9a13-5e1c35a10f1b/location_name:Scripps%20Pier
+- just more data that can be downloaded omg there is legit so much data
