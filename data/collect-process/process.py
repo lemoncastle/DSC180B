@@ -35,14 +35,11 @@ for month_dir in sorted(burger.iterdir()):
                         class_scores = pd.DataFrame()
                         print(f"Class scores file is empty for date {date}")
             else:
-                ## idk what do do with hdr file yet but I'll figure it out later
                 # hdr = read_hdr(Path(match))
                 # the tempperatures are probably the temperature of the machine not the water
-                # since temperatures are like 27 which is probably celsius so it's been ommited for now
-                # temperature = float(hdr["temperature"])
-                # humidity = float(hdr["humidity"])
+                # since temperatures fluctuate 27 so probably celsius so it's been ommited
                 continue
-        
+                          
         # combine and save (shouldn't break if one of the dfs is empty)
         combined = pd.concat([class_scores, features], axis=1)
         out_file = out_dir / f"{date}.csv"
