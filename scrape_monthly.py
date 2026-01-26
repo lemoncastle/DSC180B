@@ -18,11 +18,18 @@ options = webdriver.ChromeOptions()
 options.add_argument('--headless=new')
 
 base_url="https://ifcb.caloos.org"
+
+# scrape 2023 - 2024 data
+start_url = "https://ifcb.caloos.org/bin?dataset=scripps-pier-ifcb-183&bin=D20230302T200944_IFCB183"
+end_url = "https://ifcb.caloos.org/bin?dataset=scripps-pier-ifcb-183&bin=D20240118T161914_IFCB183"
+
+# scrape 2024 - 2025 data
 # start_url = "https://ifcb.caloos.org/bin?dataset=scripps-pier-ifcb-183&bin=D20240118T161914_IFCB183"
 # end_url = "https://ifcb.caloos.org/bin?dataset=scripps-pier-ifcb-183&bin=D20250101T185049_IFCB183"
 
-start_url = "https://ifcb.caloos.org/bin?dataset=scripps-pier-ifcb-183&bin=D20240401T015435_IFCB183"
-end_url = "https://ifcb.caloos.org/bin?dataset=scripps-pier-ifcb-183&bin=D20240704T175641_IFCB183"
+# scrape 2025 - 2026 data
+# start_url = "https://ifcb.caloos.org/bin?dataset=scripps-pier-ifcb-183&bin=D20250101T185049_IFCB183"
+# end_url = "https://ifcb.caloos.org/bin?dataset=scripps-pier-ifcb-183&bin=D20260101T002031_IFCB183"
 
 url = start_url
 
