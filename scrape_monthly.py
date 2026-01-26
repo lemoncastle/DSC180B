@@ -39,7 +39,7 @@ new_month = month
 s = datetime.now()
 session = requests.Session()
 
-out_dir = Path(f"./ifcb_downloads/2024{month}")
+out_dir = Path(f"./ifcb_downloads/2023{month}")
 out_dir.mkdir(parents=True, exist_ok=True)
 
 driver = webdriver.Chrome(service=ChromiumService(ChromeDriverManager(chrome_type=ChromeType.CHROMIUM).install()), options=options)
@@ -138,13 +138,13 @@ try:
             url = driver.current_url
         
         # end of month loop
-        print(f"== Downloaded all data of month {month} in {(datetime.now()- s).total_seconds()}s")
-        month=new_month
-        out_dir = Path(f"./ifcb_downloads/2024{month}")
-        out_dir.mkdir(parents=True, exist_ok=True)
         df = pd.DataFrame(ml_data)
         df.to_csv(out_dir / f"ml_{month}.csv", index=False)
         ml_data.clear()
+        print(f"== Downloaded all data of month {month} in {(datetime.now()- s).total_seconds()}s")
+        month=new_month
+        out_dir = Path(f"./ifcb_downloads/2023{month}")
+        out_dir.mkdir(parents=True, exist_ok=True)
 
 finally:
     driver.quit()
