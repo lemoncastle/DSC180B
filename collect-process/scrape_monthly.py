@@ -15,7 +15,8 @@ from datetime import datetime
 import time
 
 options = webdriver.ChromeOptions()
-options.add_argument('--headless=new')
+# run in headless mode (doesn't open visible browser window)
+options.add_argument('--headless=new') 
 
 base_url="https://ifcb.caloos.org"
 
@@ -38,7 +39,7 @@ month = url.split("bin=")[1].split("_")[0][5:7]
 new_month = month
 s = datetime.now()
 session = requests.Session()
-
+# create output directory for month (MUST DEFINE YEAR, minor bug sry) 
 out_dir = Path(f"./ifcb_downloads/2023{month}")
 out_dir.mkdir(parents=True, exist_ok=True)
 
@@ -54,6 +55,7 @@ def href_not_hash(driver): # wait until the href of download links are updated (
             href = el.get_attribute("href")
             return "hdr" in href
 
+# wait with retry function for selenium timeouts (loading javascript)
 def wait_with_retry(wait1, driver, retry_delay=120):
     try:
         wait1()
@@ -69,7 +71,8 @@ def wait_with_retry(wait1, driver, retry_delay=120):
         except TimeoutException:
             print("Timed out after retrying, exiting...")
             return False
-        
+
+# for download requests
 def download_with_retry(session, url, out_path, retries=1, delay=120):
     for attempt in range(retries + 1):
         try:
@@ -90,7 +93,7 @@ def download_with_retry(session, url, out_path, retries=1, delay=120):
 try:
     while url != end_url:
         while new_month == month:
-            time.sleep(4)  # wait for Js to load content and update hrefs
+            time.sleep(4)  # global wait for Js to load content and update hrefs
             burger = wait_with_retry(lambda: wait.until(href_not_hash), driver)
             if not burger:
                 print("Failed to load javascript content.")
@@ -99,6 +102,7 @@ try:
                 raise SystemExit
 
             soup = BeautifulSoup(driver.page_source, 'html.parser')
+            
             tag = soup.find("span", id="stat-ml-analyzed")
             ml_value = float(tag.get_text(strip=True).split()[0]) if tag else None
             ml_data.append({"date": date, "ml_analyzed": ml_value})
@@ -129,7 +133,7 @@ try:
                 driver.quit()
                 raise SystemExit
 
-            # update date month, and url
+            # update date, month, and url
             new_date = driver.current_url.split("bin=")[1].split("_")[0][1:9]
             new_month= driver.current_url.split("bin=")[1].split("_")[0][5:7]
             if new_date != date: 
@@ -137,16 +141,18 @@ try:
                 date = new_date
             url = driver.current_url
         
-        # end of month loop
+        # end of month loop - save ml analyzed data and go next
         df = pd.DataFrame(ml_data)
         df.to_csv(out_dir / f"ml_{month}.csv", index=False)
         ml_data.clear()
+        
         print(f"== Downloaded all data of month {month} in {(datetime.now()- s).total_seconds()}s")
         month=new_month
+        # update for new month (MUST DEFINE YEAR, minor bug sry)
         out_dir = Path(f"./ifcb_downloads/2023{month}")
         out_dir.mkdir(parents=True, exist_ok=True)
 
-finally:
+finally: # the interwebs says try/finally is good incase cat errors
     driver.quit()
     print(url)
     print(f"Finished downloading ALL DATA in {(datetime.now()- s).total_seconds()}s")
