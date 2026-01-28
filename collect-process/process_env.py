@@ -6,19 +6,20 @@ base_path = Path("./data/tidesandcurrents/")
 
 dfs = []
 
-for i in range(1, 13):
-    df = pd.read_csv(base_path / f"meteor{i}.csv")
+for f in sorted(base_path.glob("met*.csv")):
+    df = pd.read_csv(f)
+
     df.drop(columns=['Humidity (%)', 'Visibility (km)', 'Time (GMT)'], inplace=True)
-    
+
     df["Date"] = pd.to_datetime(df["Date"])
     df["date"] = df["Date"].dt.strftime("%Y%m%d")
     df = df.drop(columns=["Date"])
 
     # Force numeric columns
     for col in df.columns:
-        if col != 'date':
-            df[col] = pd.to_numeric(df[col], errors='coerce')
-    
+        if col != "date":
+            df[col] = pd.to_numeric(df[col], errors="coerce")
+
     df = df.rename(columns={
         "Wind Speed (m/s)": "wind_speed_ms",
         "Wind Dir (deg)": "wind_dir_deg",
@@ -35,7 +36,7 @@ meteor = all_data.groupby('date', as_index=False).mean()
 
 # meteor.to_csv(out_path, index=False)
 
-files = ["waterlevel-day-24-25.csv", "waterlevel-day-25-26.csv" ]
+files = ["waterlevel-day-23-24.csv", "waterlevel-day-24-25.csv", "waterlevel-day-25-26.csv" ]
 
 dfs.clear()
 
@@ -67,28 +68,30 @@ water_level = all_data.groupby('date', as_index=False).mean()
 ###
 
 base_path = Path("./data/")
-files = sorted(base_path.glob("*.csv"))  # your 16 CSVs
+files = sorted(base_path.glob("*.csv"))
 
 dfs = []
 
 for f in files:
-    # get filename without extension as variable name
-    var_name = f.stem  
-    df = pd.read_csv(f)
-    
-    # Use Start date, convert to string YYYYMMDD
-    df["date"] = df["Start date"].str[:10].str.replace("-", "")
-    
-    # Rename metrics to include variable
-    df = df.rename(columns={
-        "Mean": f"{var_name}_mean",
-        "Min": f"{var_name}_min",
-        "Max": f"{var_name}_max"
-    })
+    var_name = f.stem.lower()
 
-    # Keep only date + renamed metrics
-    df = df[["date", f"{var_name}_mean", f"{var_name}_min", f"{var_name}_max"]]
-    dfs.append(df)
+    # skip metadata row
+    df = pd.read_csv(f, skiprows=[1])
+
+    df["time"] = pd.to_datetime(df["time"], utc=True)
+    df = df[(df["time"] >= "2023-01-01") & (df["time"] < "2026-01-01") ]
+
+    value_col = [c for c in df.columns if c != "time" and not c.endswith("_qc_agg")][0]
+    df = df[["time", value_col]]
+
+    df[value_col] = pd.to_numeric(df[value_col], errors="coerce")
+
+    df["date"] = df["time"].dt.strftime("%Y%m%d")
+    df.drop(columns=["time"], inplace=True)
+
+    daily = (df.groupby("date", as_index=False).mean().round(3))
+
+    dfs.append(daily)
 
 env_df = reduce(lambda left, right: pd.merge(left, right, on="date", how="outer"), dfs)
 

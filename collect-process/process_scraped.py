@@ -5,7 +5,7 @@ import glob
 import os
 s = datetime.now()
 
-base_path = "./ifcb_downloads1/"
+base_path = "./ifcb_downloads/"
 burger = Path(base_path) # used for iterating months I'm kinda hungry
 out_dir = Path("./processed/")
 out_dir.mkdir(parents=True, exist_ok=True)
