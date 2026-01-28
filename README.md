@@ -1,19 +1,25 @@
 ## CapstoneB
 
-### repo directory
-- ```/docs``` project website
-- ```/data``` data collection and processing, includes data from caloos
-- ```/models``` TBD but where models and other things are done
-- ```/imgs``` where imgs for various things are stored
+### Repo Directory
+- ```/collect-process``` Scripts for scraping/processing
+- ```/data``` Processed data
+- ```/docs``` Project website
+- ```/imgs```
+- ```/models```
+- ```/other``` Writeup/poster and etc..
 
-link to scraped data: sorry onedrive deleted the file lol
-
+Links to raw data (UCSD personal OneDrive):
+- [IFCB_2023](https://ucsdcloud-my.sharepoint.com/:u:/g/personal/ady005_ucsd_edu/IQDU5ICaVgteR6p-yTmGK5ZyAV6XU1SX7uJmfHw1TL4uduM?e=NNUJUo) 3.4GB zipped / 10.8GB raw
+- [IFCB_2024](https://www.google.com/) 17.5GB zipped / 56.2GB raw
+- [IFCB_2025](https://www.google.com/) 14.4GB zipped / 46GB raw
+- [Enviromental_data](https://ucsdcloud-my.sharepoint.com/:u:/g/personal/ady005_ucsd_edu/IQAI0c6g1BGVR4mSs5817iNPAdLmKkZRhRyK1Gqtv3AbpTk?e=N9DJht) 67MB zipped / 620MB raw
 
 ### Data Collection
-Data was collected spanning January 5-10
-- I used windows laptop running Windows 11 IoT Enterprise LTSC 2024
-    - ungoogled chromium Version 137.0.7151.119 (Official Build, ungoogled-chromium) (64-bit)
-        - https://github.com/ungoogled-software/ungoogled-chromium/releases/tag/137.0.7151.119-1 (June 20, 2025 build)
+Data was collected from [Scripps Pier IFCB 183](https://ifcb.caloos.org/timeline?dataset=scripps-pier-ifcb-183)
+- Data spans March 2023 - January 2026, scraping took place Jan 5-26th
+- Used laptop running Windows 11 LTSC
+    - Ungoogled chromium Version 137.0.7151.119 (Official Build, ungoogled-chromium) (64-bit)
+        - Any modern browser works ([documentation](https://pypi.org/project/webdriver-manager/))
 
 Python 3.11.9
 ```
@@ -22,20 +28,11 @@ webdriver-manager==4.0.2
 beautifulsoup4==4.14.2
 requests==2.32.5
 ```
-During scraping of data the program timed out 4 times. I resumed from the last downloaded day.
-- Improvements: exception handling and retries and longer waiting to be implemented. 
-
 
 ### Other Data Collected
-All were collected from
-- https://data.caloos.org/#metadata/120738/station/data
-time span from
-- 01/01/2024 00:00 - 01/01/2026 00:00
+[California Ocean Observing Systems Data Portal](https://data.caloos.org/#metadata/120738/station/data) at Scripps Pier
+- CTD and with SeapHOx
 
-turbidity & FDOM: Fluorescent Dissolved Organic Matter were done at the earliest time online to January 1, 2026
-- 12/03/2024 17:25 - 01/01/2026 01:00
-
-From this website we get data binned by day for consistency
 ```
 Temperature
 Salinity 
@@ -43,12 +40,12 @@ Chlorophyll
 Conductivity
 Sea Water Density 
 Sea Water Pressure 
-pH (Newport Pier and Scripps Pier)
-Oxygen (Newport Pier and Scripps Pier)
+pH
+Oxygen
 ```
-Add data from
-- https://tidesandcurrents.noaa.gov/stationhome.html?id=9410230
-which includes Collected hourly
+From [Tides and Currents](https://tidesandcurrents.noaa.gov/stationhome.html?id=9410230) at Scripps Pier
+
+We collected various meteorlogical data sampled by hour:
 ```
 Wind Speed (m/s)
 Wind Dir (deg)
@@ -58,7 +55,4 @@ Baro (mb)Humidity (%)
 Visibility (km)
 Water Levels (m)
 ```
-
-### other other data that has NOT been collected
-https://data.caloos.org/#layer-data/59cb173d-9fab-44d0-9a13-5e1c35a10f1b/location_name:Scripps%20Pier
-- just more data that can be downloaded omg there is legit so much data
+[CALHABMAP](https://data.caloos.org/#module-metadata/5c35689e-2b3a-4bc9-9f5d-e526a9c19620/85653d75-c0b7-48e9-b1b1-f1c4071b10d3) also provides more data at Scripps Pier however we have not acquired it yet :)
