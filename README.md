@@ -10,9 +10,9 @@
 
 Links to raw data (UCSD personal OneDrive):
 - [IFCB_2023](https://ucsdcloud-my.sharepoint.com/:u:/g/personal/ady005_ucsd_edu/IQDU5ICaVgteR6p-yTmGK5ZyAV6XU1SX7uJmfHw1TL4uduM?e=NNUJUo) 3.4GB zipped / 10.8GB raw
-- [IFCB_2024](https://www.google.com/) 17.5GB zipped / 56.2GB raw
-- [IFCB_2025](https://www.google.com/) 14.4GB zipped / 46GB raw
-- [Enviromental_data](https://ucsdcloud-my.sharepoint.com/:u:/g/personal/ady005_ucsd_edu/IQAI0c6g1BGVR4mSs5817iNPAdLmKkZRhRyK1Gqtv3AbpTk?e=N9DJht) 67MB zipped / 620MB raw
+- [IFCB_2024](https://ucsdcloud-my.sharepoint.com/:u:/g/personal/ady005_ucsd_edu/IQDocyNz6CAwTIjfQ7Km2OMKAUuFbsN1E14rkuqEvRW0irA?e=LexqwY) 17.6GB zipped / 56.2GB raw
+- [IFCB_2025](https://ucsdcloud-my.sharepoint.com/:u:/g/personal/ady005_ucsd_edu/IQBVWe3tqkhSR6woE53VSHQIAU3e1OL_qt1NLX22Xg_CuYc?e=3Vj1pC) 14.5GB zipped / 46GB raw
+- [Enviromental_data](https://ucsdcloud-my.sharepoint.com/:u:/g/personal/ady005_ucsd_edu/IQAI0c6g1BGVR4mSs5817iNPAdLmKkZRhRyK1Gqtv3AbpTk?e=N9DJht) 66MB zipped / 620MB raw
 
 ### Data Collection
 Data was collected from [Scripps Pier IFCB 183](https://ifcb.caloos.org/timeline?dataset=scripps-pier-ifcb-183)
